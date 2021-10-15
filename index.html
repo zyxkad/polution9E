@@ -7,10 +7,10 @@
 	<body>
 		<div id="body">
 			<div id="header" k-part k-view-column k-view-height="0.7" style="box-shadow: 0 0 5px;">
-				<div>
+				<div k-view-animation k-animation-type="slide" k-animation-time="1000">
 					<h2 style="display: inline-block;">Topic: &nbsp;<h3 style="display: inline-block;">What are pollutants?</h3></h2>
 				</div>
-				<div>
+				<div k-view-animation k-animation-type="fade" k-animation-delay="500" k-animation-time="1000">
 					<h3 style="display: inline-block;">Members:</h3>
 					<p style="display: inline-block;">&emsp;--
 						<span class="signature">Joseph Capozzi</span>,&emsp;
@@ -19,24 +19,26 @@
 					</p>
 				</div>
 			</div>
-			<div k-part k-view-height="0.4" k-move-in="slide" k-move-in-time="1000" k-move-out="slide" k-move-out-time="500"
-				class="no-scrollbar" style="overflow-y: scroll;">
+			<div k-part k-view-height="0.4" k-animation-type="fade" k-animation-time="1000">
 				<h1>What are pollutants?</h1>
 			</div>
-			<div k-part k-view-column k-view-height="0.7" k-move-in="fade" k-move-in-time="500" k-move-out="fade">
-				<div style="max-width: 50rem;">
+			<div k-part k-view-column k-view-height="0.7">
+				<div k-view-animation k-animation-style='"right":"0%"' k-animation-style-out='"right":"-100%"'
+				     k-animation-time="600" style="max-width: 50rem; box-shadow: 0 0 4px; margin: 7px;">
 					<h3>Causes:</h3>
 					<p>
-					This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text.
+						This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text.
 					</p>
 				</div>
-				<div style="max-width: 50rem;">
+				<div k-view-animation k-animation-style='"right":"0%"' k-animation-style-out='"right":"-100%"'
+				     k-animation-delay="300" k-animation-time="600" style="max-width: 50rem; box-shadow: 0 0 4px; margin: 7px;">
 					<h3>Effects:</h3>
 					<p>
 						This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text.
 					</p>
 				</div>
-				<div style="max-width: 50rem;">
+				<div k-view-animation k-animation-style='"right":"0%"' k-animation-style-out='"right":"-100%"'
+				     k-animation-delay="600" k-animation-time="600" style="max-width: 50rem; box-shadow: 0 0 4px; margin: 7px;">
 					<h3>Solutions:</h3>
 					<p>
 						This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text.
