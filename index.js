@@ -84,10 +84,12 @@ $document.ready(function(){
 	parts.each(function(){
 		var $this = $(this);
 		$this.css({
-			padding: '1rem',
+			paddingLeft: '1rem',
+			paddingRight: '1rem',
 			display: 'flex',
 			flexDirection: $this.attr('k-view-column') !== undefined ?'column' :'row',
-			alignItems: 'center'
+			alignItems: 'center',
+			position: 'relative',
 		})
 		if($this.attr('k-view-height')){
 			var kvh = Number.parseFloat($this.attr('k-view-height'));
@@ -103,9 +105,11 @@ $document.ready(function(){
 	});
 	$body.find('*[k-view-animation]').each(function(){
 		var $this = $(this);
-		$this.css({
-			position: 'relative'
-		});
+		if($this.css('position') === 'static'){
+			$this.css({
+				position: 'relative'
+			});
+		}
 		$window.scroll(function(){
 			if($this.offset().top + $this.height() * 1 / 3 < $window.scrollTop() + $window.height() &&
 			   $this.offset().top + $this.height() * 2 / 3 > $window.scrollTop()){
@@ -143,15 +147,22 @@ $document.ready(function(){
 			up();
 		}
 		$this.click(function(){
+			if(Number.parseInt($this.css('opacity')) !== 1){
+				return;
+			}
 			var end = $this.offset().top + $this.height();
-			let n = $window.scrollTop();
+			let n = $window.scrollTop(), i = 0;
 			let frame = (end - n) / 30;
-			for(let i = 0;n < end;n += frame){
+			for(;n < end;n += frame){
 				let m = n;
 				setTimeout(()=>{
 					$window.scrollTop(m);
 				}, (i++) * 10);
 			}
+			setTimeout(()=>{
+				console.log(end);
+				$window.scrollTop(end);
+			}, i * 10);
 		});
 	})
 
