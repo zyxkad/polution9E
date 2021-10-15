@@ -2,44 +2,59 @@
 <html>
 	<head>
 		<title>Our Science Work</title>
+		<meta name="viewport" content="initial-scale=0.8"/>
 		<link rel="stylesheet" href="./index.css" type="text/css" />
 	</head>
 	<body>
 		<div id="body">
-			<div id="header" k-part k-view-column k-view-height="0.7" style="box-shadow: 0 0 5px;">
-				<div k-view-animation k-animation-type="slide" k-animation-time="1000">
-					<h2 style="display: inline-block;">Topic: &nbsp;<h3 style="display: inline-block;">What are pollutants?</h3></h2>
+			<div id="header" k-part k-view-column k-view-height="1" style="box-shadow:0 0 5px;position:relative;">
+				<div k-view-animation k-animation-type="slide" k-animation-time="1000" style="font-size:1rem;">
+					<h1 style="display:inline-block;">Topic: &nbsp;<h2 style="display:inline-block;">What are pollutants?</h2></h1>
 				</div>
-				<div k-view-animation k-animation-type="fade" k-animation-delay="500" k-animation-time="1000">
-					<h3 style="display: inline-block;">Members:</h3>
-					<p style="display: inline-block;">&emsp;--
+				<div k-view-animation k-animation-type="slide" k-animation-delay="400" k-animation-time="600" style="font-size:1rem;">
+					<h2 style="display:inline-block;">Members:</h2>
+					<p style="display:inline-block;">&emsp;--
 						<span class="signature">Joseph Capozzi</span>,&emsp;
 						<span class="signature">Benjamin Habot</span>,&emsp;
 						<span class="signature">Kevin Zhang</span>
 					</p>
 				</div>
+				<div style="font-size:1rem;">
+					<h2 k-view-animation k-animation-type="fade" k-animation-delay="800" k-animation-time="600" style="margin-bottom:0;">Responsibility:</h2>
+					<ul k-view-animation k-animation-type="slide" k-animation-delay="1200" k-animation-time="600"
+					    style="margin-top:0.8rem;padding-left:1rem;list-style-type:disclosure-closed;">
+						<li>Joseph: </li>
+						<li>Ben: </li>
+						<li>Kevin: </li>
+					</ul>
+				</div>
+				<div class="downscroll" style="width:4rem;height:11rem;position:absolute;bottom:0;left:50%;transform:translate(-50%,0);">
+					<div style="border-width:2rem;border-top-color:#0009;top:0rem;"></div>
+					<div style="border-width:2rem;border-top-color:#0009;top:1rem;"></div>
+					<div style="border-width:2rem;border-top-color:#0009;top:2rem;"></div>
+				</div>
 			</div>
-			<div k-part k-view-height="0.4" k-animation-type="fade" k-animation-time="1000">
+			<div k-part k-view-height="0.3" k-view-animation k-animation-type="fade" k-animation-time="1000">
 				<h1>What are pollutants?</h1>
 			</div>
-			<div k-part k-view-column k-view-height="0.7">
-				<div k-view-animation k-animation-style='"right":"0%"' k-animation-style-out='"right":"-100%"'
-				     k-animation-time="600" style="max-width: 50rem; box-shadow: 0 0 4px; margin: 7px;">
-					<h3>Causes:</h3>
+			<div k-part k-view-column k-view-height="1" style="font-size:1rem;">
+				<div k-view-animation k-animation-style='left:0' k-animation-style-out='left:${that.$window.width()}px'
+				     k-animation-time="600" style="max-width:50rem;box-shadow:0 0 4px;margin:7px;padding:0.7rem;border-radius:1rem;">
+					<h2>Causes:</h2>
 					<p>
 						This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text.
 					</p>
 				</div>
-				<div k-view-animation k-animation-style='"right":"0%"' k-animation-style-out='"right":"-100%"'
-				     k-animation-delay="300" k-animation-time="600" style="max-width: 50rem; box-shadow: 0 0 4px; margin: 7px;">
-					<h3>Effects:</h3>
+				<div k-view-animation k-animation-style='right:0' k-animation-style-out='right:${that.$window.width()}px'
+				     k-animation-delay="300" k-animation-time="600" style="max-width:50rem;box-shadow:0 0 4px;margin:7px;padding:0.7rem;border-radius:1rem;">
+					<h2>Effects:</h2>
 					<p>
 						This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text.
 					</p>
 				</div>
-				<div k-view-animation k-animation-style='"right":"0%"' k-animation-style-out='"right":"-100%"'
-				     k-animation-delay="600" k-animation-time="600" style="max-width: 50rem; box-shadow: 0 0 4px; margin: 7px;">
-					<h3>Solutions:</h3>
+				<div k-view-animation k-animation-style='left:0' k-animation-style-out='left:${that.$window.width()}px'
+				     k-animation-delay="600" k-animation-time="600" style="max-width:50rem;box-shadow:0 0 4px;margin:7px;padding:0.7rem;border-radius:1rem;">
+					<h2>Solutions:</h2>
 					<p>
 						This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text.
 					</p>
@@ -47,6 +62,7 @@
 			</div>
 		</div>
 		<footer id="footer"></footer>
+		<div k-pre-holder style="width:100%;height:100%;position:fixed;top:0;left:0;background-color:#fff;"></div>
 		<script type="text/javascript" src="./jquery-3.6.0.min.js"></script>
 		<script type="text/javascript" src="./index.js"></script>
 	</body>
