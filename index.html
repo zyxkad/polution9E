@@ -7,26 +7,39 @@
 	</head>
 	<body>
 		<div id="body">
-			<div k-part k-view-column k-view-height="1" style="box-shadow:0 0 5px;"> 
+			<div k-part k-view-column k-view-height="0.98" style="box-shadow:0 0 5px;background-color:#0bf6;"> 
 				<!-- start part -->
 				<div k-view-animation k-animation-type="slide" k-animation-time="1000" style="font-size:1rem;">
 					<h1 style="display:inline-block;">Topic: &nbsp;<h2 style="display:inline-block;">What are pollutants?</h2></h1>
 				</div>
-				<div k-view-animation k-animation-type="slide" k-animation-delay="400" k-animation-time="600" style="font-size:1rem;">
+				<div k-view-animation k-animation-type="slide-left" k-animation-delay="400" k-animation-time="600" style="font-size:1rem;">
 					<h2 style="display:inline-block;">Members:</h2>
 					<p style="display:inline-block;">&emsp;--
-						<span class="signature">Joseph Capozzi</span>,&emsp;
-						<span class="signature">Benjamin Habot</span>,&emsp;
-						<span class="signature">Kevin Zhang</span>
+						<span k-load-animation k-animation-type="fade" k-animation-delay="5100">
+							&emsp;<span class="signature">Joseph Capozzi</span>
+						</span>
+						<span k-load-animation k-animation-type="fade" k-animation-delay="10100">
+							,&emsp;<span class="signature">Benjamin Habot</span>
+						</span>
+						<span k-load-animation k-animation-type="fade" k-animation-delay="15100">
+							,&emsp;<span class="signature">Kevin Zhang</span>
+						</span>
 					</p>
 				</div>
 				<div style="font-size:1rem;">
-					<h2 k-view-animation k-animation-type="fade" k-animation-delay="800" k-animation-time="600" style="margin-bottom:0;">Responsibility:</h2>
+					<h2 k-view-animation k-animation-type="fade" k-animation-delay="800" k-animation-time="600"
+					    style="margin-bottom:0;text-align:center;">Responsibility:</h2>
 					<ul k-view-animation k-animation-type="slide" k-animation-delay="800" k-animation-time="600"
 					    style="margin-top:0.8rem;padding-left:1rem;list-style-type:disclosure-closed;">
-						<li>Joseph: </li>
-						<li>Ben: </li>
-						<li>Kevin: </li>
+						<li k-load-animation k-animation-type="slide" k-animation-delay="4900" k-animation-time="600">
+							<span k-load-animation k-animation-type="input" k-animation-delay="5500" k-animation-time="1500">
+								Joseph: .</span></li>
+						<li k-load-animation k-animation-type="slide" k-animation-delay="9900" k-animation-time="600">
+							<span k-load-animation k-animation-type="input" k-animation-delay="10500" k-animation-time="1500">
+								Ben: Search data</span></li>
+						<li k-load-animation k-animation-type="slide" k-animation-delay="13900" k-animation-time="600">
+							<span k-load-animation k-animation-type="input" k-animation-delay="15500" k-animation-time="2000">
+								Kevin: Build the website you see</span></li>
 					</ul>
 				</div>
 				<div class="downscroll" k-view-animation k-animation-type="fade" k-animation-delay="1200" k-animation-time="600"
@@ -36,26 +49,27 @@
 					<div style="border-width:2rem;border-top-color:#0009;"></div>
 				</div>
 			</div>
-			<div k-part k-view-column k-view-animation k-animation-type="fade" k-animation-time="1000" style="font-size:1rem;">
-				<h1 style="margin-top:2rem;">What are pollutants?</h1>
+			<div k-part k-view-column k-view-animation k-animation-type="input" k-animation-delay="500" k-animation-time="1800"
+			     style="font-size:1rem;">
+				<h1 style="margin-top:3rem;">What are pollutants?</h1>
 			</div>
 			<div k-part k-view-column k-view-height="1" style="font-size:1rem;">
-				<div k-view-animation k-animation-style='left:0' k-animation-style-out='left:${that.$window.width()}px'
-				     k-animation-time="600" style="max-width:50rem;box-shadow:0 0 4px;margin:7px;padding:0.7rem;border-radius:1rem;">
+				<div k-view-animation k-animation-type="slide-left" k-animation-time="600"
+				     style="max-width:50rem;box-shadow:0 0 4px;margin:7px;padding:0.7rem;border-radius:1rem;background-color:#ff05;">
 					<h2>Causes:</h2>
 					<p>
 						This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text.
 					</p>
 				</div>
-				<div k-view-animation k-animation-style='right:0' k-animation-style-out='right:${that.$window.width()}px'
-				     k-animation-delay="100" k-animation-time="600" style="max-width:50rem;box-shadow:0 0 4px;margin:7px;padding:0.7rem;border-radius:1rem;">
+				<div k-view-animation k-animation-type="slide-right" k-animation-delay="100" k-animation-time="600"
+				     style="max-width:50rem;box-shadow:0 0 4px;margin:7px;padding:0.7rem;border-radius:1rem;background-color:#f0f5;">
 					<h2>Effects:</h2>
 					<p>
 						This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text.
 					</p>
 				</div>
-				<div k-view-animation k-animation-style='left:0' k-animation-style-out='left:${that.$window.width()}px'
-				     k-animation-delay="200" k-animation-time="600" style="max-width:50rem;box-shadow:0 0 4px;margin:7px;padding:0.7rem;border-radius:1rem;">
+				<div k-view-animation k-animation-type="slide-left" k-animation-delay="200" k-animation-time="600"
+				     style="max-width:50rem;box-shadow:0 0 4px;margin:7px;padding:0.7rem;border-radius:1rem;background-color:#0f05;">
 					<h2>Solutions:</h2>
 					<p>
 						This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text. This is test text.
@@ -63,14 +77,23 @@
 				</div>
 				<div class="downscroll" k-view-animation k-animation-type="fade" k-animation-delay="100" k-animation-time="600"
 				     style="width:4rem;height:11rem;">
-					<div style="border-width:2rem;border-top-color:#0009;"></div>
-					<div style="border-width:2rem;border-top-color:#0009;"></div>
-					<div style="border-width:2rem;border-top-color:#0009;"></div>
+					<div style="border-width:2rem;border-top-color:#f008;"></div>
+					<div style="border-width:2rem;border-top-color:#0f08;"></div>
+					<div style="border-width:2rem;border-top-color:#00f8;"></div>
 				</div>
 			</div>
 			<div k-part k-view-column k-view-height="1">
 				<!-- end part -->
-				<h1 style="position:absolute;top:50%;transform:translate(0,-100%);">Thanks for you watching</h1>
+				<div style="position:absolute;top:50%;transform:translate(0,-50%);text-align:center;">
+					<h1 k-view-animation k-animation-type="fade" k-animation-delay="200" k-animation-time="800">Thanks for you watching</h1>
+					<h3 k-view-animation k-animation-type="slide" k-animation-delay="500" k-animation-time="600">Have a happy nice day!</h3>
+				</div>
+				<footer style="width:100%;height:5rem;position:absolute;left:0;bottom:0;padding:0.5rem">
+					<p>
+						written by Kevin Zhang(<a href="mailto:zyxkad@gmail.com">zyxkad@gmail.com</a>)<br/>
+						copyleft&copy; 2021
+					</p>
+				</footer>
 			</div>
 		</div>
 		<div k-pre-holder style="width:100%;height:100%;position:fixed;top:0;left:0;background-color:#fff;"></div>
