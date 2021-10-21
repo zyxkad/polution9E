@@ -10,26 +10,87 @@ const $window = $(window);
 const $document = $(document);
 const $body = $(document.body);
 
+function checkCanShow($e){
+	return $e.offset().top + $e.height() * 1 / 3 < $window.scrollTop() + $window.height() &&
+	       $e.offset().top + $e.height() * 2 / 3 > $window.scrollTop();
+}
+
 class Context{
 	constructor(){
+		this._rejecting = false;
 		this.call = [];
 	}
+
+	get isrejecting(){
+		return this._rejecting;
+	}
+
 	reject(){
 		var cs = this.call;
 		this.call = [];
-		cs.forEach((c)=>{c(false);});
+		cs.forEach((c)=>{c();});
 	}
-	with(r){
-		this.call.push(r);
+	async rejectWhen(call, ...args){
+		this._rejecting = true;
+		this.reject();
+		const re = await call(...args);
+		this._rejecting = false;
+		return re;
+	}
+
+	with(rj){
+		if(this._rejecting){
+			rj();
+			return ()=>0;
+		}
+		this.call.push(rj);
+		return ()=>{
+			this.call = this.call.filter((x)=>x !== rj);
+		};
+	}
+	async withCallAsync(rj, call, ...args){
+		if(this._rejecting){
+			rj();
+			return;
+		}
+		this.call.push(rj);
+		const re = await call(...args);
+		this.call = this.call.filter((x)=>x !== rj);
+		return re;
 	}
 }
 
 function sleep(t, c=undefined){
-	return new Promise((r)=>{
-		if(c){
-			c.with(r);
+	var s = null;
+	var re0 = null;
+	var r = c?c.with(()=>{
+		r = null;
+		if(s !== null){
+			console.log('clearing', s);
+			clearTimeout(s);
+			if(re0 !== null){
+				console.log('re0 false')
+				re0(false);
+			}
 		}
-		setTimeout(()=>{r(true)}, t);
+	}):null;
+	return new Promise((re)=>{
+		if(c){
+			if(r){
+				re0 = re;
+				s = setTimeout(()=>{
+					if(r){ r(); }
+					re(true);
+				}, t);
+			}else{
+				console.log('cleared')
+				re(false);
+			}
+		}else{
+			setTimeout(()=>{
+				re(true);
+			}, t);
+		}
 	});
 }
 
@@ -79,17 +140,33 @@ function moveIn($e, call=undefined){
 					anistyle['left'] = '0';
 					break;
 				case 'input':
-					setTimeout(()=>{moveIn_input($e, call, time)}, delay);
+					setTimeout(()=>{
+						if(checkCanShow($e)){
+							moveIn_input($e, call, time);
+						}else{
+							call(false);
+						}
+					}, delay);
 					return;
 				default:
 					anistyle['opacity'] = '1';
 			}
 		}
 	}
-	$e.delay(delay).animate(anistyle, time, call);
+	setTimeout(()=>{
+		if(checkCanShow($e)){
+			$e.animate(anistyle, time, call);
+		}else{
+			call(false);
+		}
+	}, delay);
 }
 
 function moveOut($e, call=undefined, quickly=false){
+	if(!$e[0].k_ani_ctx){
+		$e[0].k_ani_ctx = new Context();
+	}
+	$e[0].k_ani_ctx.reject();
 	var anistyle = $e.is('[k-animation-style]')?parseStyle($e.attr('k-animation-style')):null;
 	var time = $e.is('[k-animation-time]')?parseTime($e.attr('k-animation-time')):1000;
 	if(!anistyle){
@@ -119,7 +196,7 @@ function moveOut($e, call=undefined, quickly=false){
 			$e[0].k_default_css[k] = $e.css(k);
 		}
 	}
-	$e.animate(anistyle, quickly?0:time, call);
+	$e.animate(anistyle, quickly?0:time, call)
 }
 
 class TagNode extends window.Comment{
@@ -191,7 +268,9 @@ function moveIn_input($e, call=undefined, time=1000){
 		return;
 	}
 	const pert = time / textlen;
+	var isreject = false;
 	var showText = async function(e){
+		if(isreject){ return false; }
 		const parent = e.parentNode;
 		if(e.nodeName.toLowerCase() === "#textholder"){
 			let text = e.k_text;
@@ -205,14 +284,14 @@ function moveIn_input($e, call=undefined, time=1000){
 			}
 			parent.removeChild(tag);
 		}else{
-			if(e.hasChildNodes()){
-				if(!await showText(e.firstChild)){
+			if(e.firstChild){
+				if(!await $e[0].k_ani_ctx.withCallAsync(()=>{ isreject = true; }, showText, e.firstChild) || isreject){
 					return false;
 				}
 			}
 		}
-		if(e.nextSibling !== null){
-			if(!await showText(e.nextSibling)){
+		if(e.nextSibling){
+			if(!await $e[0].k_ani_ctx.withCallAsync(()=>{ isreject = true; }, showText, e.nextSibling) || isreject){
 				return false;
 			}
 		}
@@ -225,10 +304,6 @@ function moveOut_input($e, call=undefined, time=1000){
 	if(time < 0){
 		time = 0;
 	}
-	if(!$e[0].k_ani_ctx){
-		$e[0].k_ani_ctx = new Context();
-	}
-	$e[0].k_ani_ctx.reject();
 	hideAllText($e[0]);
 }
 
@@ -272,8 +347,7 @@ $document.ready(function(){
 			});
 		}
 		$window.scroll(function(){
-			if($this.offset().top + $this.height() * 1 / 3 < $window.scrollTop() + $window.height() &&
-			   $this.offset().top + $this.height() * 2 / 3 > $window.scrollTop()){
+			if(checkCanShow($this)){
 				if(!$this[0].k_animationed){
 					$this[0].k_animationed = 1;
 					moveIn($this, function(){
