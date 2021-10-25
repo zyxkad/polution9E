@@ -1,4 +1,6 @@
 
+// Copyright 2021 by Yuxuan Zhang
+
 'use strict';
 
 function eval_(_, that=undefined){
