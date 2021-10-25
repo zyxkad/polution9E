@@ -68,10 +68,8 @@ function sleep(t, c=undefined){
 	var r = c?c.with(()=>{
 		r = null;
 		if(s !== null){
-			console.log('clearing', s);
 			clearTimeout(s);
 			if(re0 !== null){
-				console.log('re0 false')
 				re0(false);
 			}
 		}
@@ -85,7 +83,6 @@ function sleep(t, c=undefined){
 					re(true);
 				}, t);
 			}else{
-				console.log('cleared')
 				re(false);
 			}
 		}else{
