@@ -415,7 +415,7 @@ $document.ready(function(){
 	{
 		let $signshower = $(`<div></div>`).css({width:'0',height:'0',
 			position:'fixed',top:'50%',left:'50%',transform:'translate(-50%,-50%)',
-			backgroundColor:'#fffe',fontSize:'3rem',textAlign:'center'}).hide();
+			backgroundColor:'#fffb',fontSize:'3rem',textAlign:'center'}).hide();
 		$(document.body).append($signshower);
 		let ei = 0;
 		$view.find('.signature').each(function(i){
