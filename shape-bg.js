@@ -1,5 +1,5 @@
 
-// Copyright 2021 written by Yuxuan Zhang
+// Copyright 2021 written by zyxkad@gmail.com
 
 'use strict';
 
@@ -104,8 +104,9 @@ function Point(x=undefined, y=undefined, r=undefined, s=undefined){
 		this.y = (y !== undefined) ?y :((Math.random() < 0.5 ?-100 :BG_CANVAS.height) + Math.random() * 100);
 	}
 	this.r = (r !== undefined) ?r :(Math.random() * 360);
-	this.s = (s !== undefined) ?s :(Math.random() * 30 + 10);
+	this.s = (s !== undefined) ?s :((Math.random() * 30 + 10) / 1000);
 	this.linetag = [];
+	this.drawed = false;
 }
 
 Point.prototype.isalive = function(){
@@ -113,15 +114,21 @@ Point.prototype.isalive = function(){
 }
 
 Point.prototype.distanceOf = function(obj){
-	return Math.sqrt(Math.pow(this.x - obj.x, 2) + Math.pow(this.y - obj.y, 2));
+	let dx = this.x - obj.x, dy = this.y - obj.y;
+	return Math.sqrt(dx * dx + dy * dy);
 }
 
 Point.prototype.tick = function(n){
-	this.x += Math.cos(this.r) * (this.s * n / 1000);
-	this.y += Math.sin(this.r) * (this.s * n / 1000);
+	this.x += Math.cos(this.r) * (this.s * n);
+	this.y += Math.sin(this.r) * (this.s * n);
+	this.drawed = false;
 }
 
+var linetmp = {};
+
 Point.prototype.draw = function(ctx){
+	if(this.drawed){ return; }
+	this.drawed = true;
 	ctx.fillStyle = '#000';
 	ctx.beginPath();
 	ctx.moveTo(this.x + 1, this.y);
@@ -129,16 +136,13 @@ Point.prototype.draw = function(ctx){
 	ctx.fill();
 	ctx.closePath();
 	for(let i of ITEM_LIST){
+		if(this.linetag.indexOf(i) !== -1){ continue; }
 		let dis = this.distanceOf(i);
-		if(dis < 150 && this.linetag.indexOf(i) === -1){
+		if(dis < 150){
 			i.linetag.push(this);
-			ctx.beginPath();
-			ctx.moveTo(this.x, this.y);
-			ctx.lineTo(i.x, i.y);
-			ctx.lineWidth = dis < 100 ?0.8 :(150 - dis) / (50 / 0.8);
-			ctx.strokeStyle = '#000c';
-			ctx.stroke();
-			ctx.closePath();
+			let k = this.x + ',' + this.y;
+			if(!(k in linetmp)){ linetmp[k] = [[i.x, i.y, dis < 100 ?0.8 :(2.4 - dis / 62.5)]]; }
+			else{ linetmp[k].push([i.x, i.y, dis < 100 ?0.8 :(2.4 - dis / 62.5)]); }
 		}
 	}
 	this.linetag = [];
@@ -148,7 +152,7 @@ Point.prototype.draw = function(ctx){
 			ctx.beginPath();
 			ctx.moveTo(this.x, this.y);
 			ctx.lineTo(mousepos.x, mousepos.y);
-			ctx.lineWidth = dis < 100 ?0.8 :(150 - dis) / (50 / 0.8);
+			ctx.lineWidth = dis < 100 ?0.8 :((150 - dis) / (62.5));
 			ctx.strokeStyle = '#000c';
 			ctx.stroke();
 			ctx.closePath();
@@ -156,7 +160,7 @@ Point.prototype.draw = function(ctx){
 	}
 }
 
-var POINT_RATE = 10000;
+var POINT_RATE = 20000;
 var MAX_POINT = Math.ceil(BG_CANVAS.width * BG_CANVAS.height / POINT_RATE);
 var ITEM_LIST = [];
 
@@ -176,10 +180,24 @@ async function tickAll(n){
 	ITEM_LIST = tmp;
 }
 
-function drawAll(ctx){
+async function drawAll(ctx){
 	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+	linetmp = [];
 	for(let i of ITEM_LIST){
-		i.draw(ctx);
+		await i.draw(ctx);
+	}
+	ctx.strokeStyle = '#000c';
+	for(let x_y in linetmp){
+		let poss = linetmp[x_y];
+		let [x, y] = x_y.split(',', 2).map((n)=>Number.parseInt(n));
+		for(let p of poss){
+			ctx.beginPath();
+			ctx.moveTo(x, y);
+			ctx.lineTo(p[0], p[1]);
+			ctx.lineWidth = p[2];
+			ctx.stroke();
+			ctx.closePath();
+		}
 	}
 }
 
