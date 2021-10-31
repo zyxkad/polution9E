@@ -106,7 +106,6 @@ function Point(x=undefined, y=undefined, r=undefined, s=undefined){
 	this.r = (r !== undefined) ?r :(Math.random() * 360);
 	this.s = (s !== undefined) ?s :((Math.random() * 30 + 10) / 1000);
 	this.linetag = [];
-	this.drawed = false;
 }
 
 Point.prototype.isalive = function(){
@@ -124,14 +123,11 @@ Point.prototype.distanceOf = function(obj){
 Point.prototype.tick = function(n){
 	this.x += Math.cos(this.r) * (this.s * n);
 	this.y += Math.sin(this.r) * (this.s * n);
-	this.drawed = false;
 }
 
 var linetmp = {};
 
 Point.prototype.draw = function(ctx){
-	if(this.drawed){ return; }
-	this.drawed = true;
 	ctx.fillStyle = '#000';
 	ctx.beginPath();
 	ctx.moveTo(this.x + 1, this.y - window.scrollY);
@@ -149,22 +145,24 @@ Point.prototype.draw = function(ctx){
 		}
 	}
 	this.linetag = [];
-	if(mousepos){
-		let dis = this.distanceOf({
-			x: mousepos.x,
-			y: mousepos.y + window.scrollY
-		});
-		if(dis < 150){
-			ctx.beginPath();
-			ctx.moveTo(this.x, this.y - window.scrollY);
-			ctx.lineTo(mousepos.x, mousepos.y);
-			ctx.lineWidth = dis < 100 ?0.8 :((150 - dis) / (62.5));
-			ctx.strokeStyle = '#000c';
-			ctx.stroke();
-			ctx.closePath();
-		}
-	}
+	// if(mousepos){
+	// 	let dis = this.distanceOf({
+	// 		x: mousepos.x,
+	// 		y: mousepos.y + window.scrollY
+	// 	});
+	// 	if(dis < 150){
+	// 		ctx.beginPath();
+	// 		ctx.moveTo(this.x, this.y - window.scrollY);
+	// 		ctx.lineTo(mousepos.x, mousepos.y);
+	// 		ctx.lineWidth = dis < 100 ?0.8 :((150 - dis) / (62.5));
+	// 		ctx.strokeStyle = '#000c';
+	// 		ctx.stroke();
+	// 		ctx.closePath();
+	// 	}
+	// }
 }
+
+var mouse_point = null;
 
 var POINT_RATE = 20000;
 var MAX_POINT = Math.ceil(BG_CANVAS.width * BG_CANVAS.height / POINT_RATE);
@@ -192,6 +190,7 @@ async function drawAll(ctx){
 	for(let i of ITEM_LIST){
 		await i.draw(ctx);
 	}
+	mouse_point && mouse_point.draw(ctx);
 	ctx.strokeStyle = '#000c';
 	for(let x_y in linetmp){
 		let poss = linetmp[x_y];
@@ -236,14 +235,19 @@ window.addEventListener('resize', function(){
 
 window.addEventListener('mousemove', function(event){
 	mousepos = {x: event.x, y: event.y};
+	mouse_point = new Point(event.x, event.y + window.scrollY, 0, 0);
 	tick_context.reject();
 });
 
 document.addEventListener('mouseleave', function(event){
 	mousepos = null;
+	mouse_point = null;
 })
 
 document.addEventListener('scroll', function(){
+	if(mousepos){
+		mouse_point = new Point(mousepos.x, mousepos.y + window.scrollY, 0, 0);
+	}
 	tick_context.reject();
 });
 

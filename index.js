@@ -442,7 +442,7 @@ $document.ready(function(){
 				$body.css({
 					overflowY: 'scroll'
 				});
-			}, ei * 5000 + 2000);
+			}, ei * 5000 + 3500);
 		}
 	}
 
