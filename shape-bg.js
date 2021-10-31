@@ -98,10 +98,10 @@ var mousepos = null;
 function Point(x=undefined, y=undefined, r=undefined, s=undefined){
 	if(Math.random() < 0.5){
 		this.x = (x !== undefined) ?x :((Math.random() < 0.5 ?-100 :BG_CANVAS.width) + Math.random() * 100);
-		this.y = (y !== undefined) ?y :(Math.random() * BG_CANVAS.height);
+		this.y = (y !== undefined) ?y :(Math.random() * BG_CANVAS.height + window.scrollY);
 	}else{
 		this.x = (x !== undefined) ?x :(Math.random() * BG_CANVAS.width);
-		this.y = (y !== undefined) ?y :((Math.random() < 0.5 ?-100 :BG_CANVAS.height) + Math.random() * 100);
+		this.y = (y !== undefined) ?y :((Math.random() < 0.5 ?-100 :BG_CANVAS.height) + Math.random() * 100 + window.scrollY);
 	}
 	this.r = (r !== undefined) ?r :(Math.random() * 360);
 	this.s = (s !== undefined) ?s :((Math.random() * 30 + 10) / 1000);
@@ -110,7 +110,10 @@ function Point(x=undefined, y=undefined, r=undefined, s=undefined){
 }
 
 Point.prototype.isalive = function(){
-	return -100 <= this.x && this.x <= BG_CANVAS.width + 100 && -100 <= this.y && this.y <= BG_CANVAS.height + 100;
+	return (
+		-100 <= this.x && this.x <= BG_CANVAS.width + 100 &&
+		-100 <= this.y - window.scrollY && this.y - window.scrollY <= BG_CANVAS.height + 100
+	);
 }
 
 Point.prototype.distanceOf = function(obj){
@@ -131,8 +134,8 @@ Point.prototype.draw = function(ctx){
 	this.drawed = true;
 	ctx.fillStyle = '#000';
 	ctx.beginPath();
-	ctx.moveTo(this.x + 1, this.y);
-	ctx.arc(this.x, this.y, 1, 0, Math.PI * 2, false);
+	ctx.moveTo(this.x + 1, this.y - window.scrollY);
+	ctx.arc(this.x, this.y - window.scrollY, 1, 0, Math.PI * 2, false);
 	ctx.fill();
 	ctx.closePath();
 	for(let i of ITEM_LIST){
@@ -147,10 +150,13 @@ Point.prototype.draw = function(ctx){
 	}
 	this.linetag = [];
 	if(mousepos){
-		let dis = this.distanceOf(mousepos);
+		let dis = this.distanceOf({
+			x: mousepos.x,
+			y: mousepos.y + window.scrollY
+		});
 		if(dis < 150){
 			ctx.beginPath();
-			ctx.moveTo(this.x, this.y);
+			ctx.moveTo(this.x, this.y - window.scrollY);
 			ctx.lineTo(mousepos.x, mousepos.y);
 			ctx.lineWidth = dis < 100 ?0.8 :((150 - dis) / (62.5));
 			ctx.strokeStyle = '#000c';
@@ -192,8 +198,8 @@ async function drawAll(ctx){
 		let [x, y] = x_y.split(',', 2).map((n)=>Number.parseInt(n));
 		for(let p of poss){
 			ctx.beginPath();
-			ctx.moveTo(x, y);
-			ctx.lineTo(p[0], p[1]);
+			ctx.moveTo(x, y - window.scrollY);
+			ctx.lineTo(p[0], p[1] - window.scrollY);
 			ctx.lineWidth = p[2];
 			ctx.stroke();
 			ctx.closePath();
@@ -236,6 +242,10 @@ window.addEventListener('mousemove', function(event){
 document.addEventListener('mouseleave', function(event){
 	mousepos = null;
 })
+
+document.addEventListener('scroll', function(){
+	tick_context.reject();
+});
 
 if(document.readyState === 'complete'){
 	ready();
